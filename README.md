@@ -81,7 +81,7 @@ Todos los colores viven como variables en `:root` (`css/estilos.css`). Puedes de
 | <a href="img/readme/color-fondo-imagen.png"><img src="img/readme/color-fondo-imagen.png" width="48"></a> | Fondo imagen | `#F4F3EF` | `--fondo-imagen` | Caja de imágenes mientras carga la foto |
 | <a href="img/readme/color-blanco.png"><img src="img/readme/color-blanco.png" width="48"></a> | Blanco | `#FFFFFF` | `--blanco` | Fondo de la ventana |
 
-📥 **Descargar la paleta completa:** [img/readme/paleta.png](img/readme/paleta.png) · [paleta de la foto](img/readme/paleta-foto.png)
+**Descargar la paleta completa:** [img/readme/paleta.png](img/readme/paleta.png) · [paleta de la foto](img/readme/paleta-foto.png)
 
 ### Grilla y reglas
 
@@ -171,7 +171,7 @@ El mismo sistema de celdas se repite en todo el sitio: en el **borde roto bajo c
   <a href="img/readme/mano-3d.png"><img src="img/readme/mano-3d-crema.jpg" width="360" alt="Mano 3D de metal líquido"></a>
 </p>
 
-📥 **Descargar la mano en alta resolución:** [PNG con fondo transparente](img/readme/mano-3d.png) · [JPG sobre crema](img/readme/mano-3d-crema.jpg)
+**Descargar la mano en alta resolución:** [PNG con fondo transparente](img/readme/mano-3d.png) · [JPG sobre crema](img/readme/mano-3d-crema.jpg)
 
 En la página **"sobre mí"** aparece la pregunta **"¿interactuemos?"** junto a una mano de metal líquido. Para entrar a mi presentación hay que **mostrarle la mano abierta a la cámara**: la mano 3D responde y se deshace en píxeles.
 
