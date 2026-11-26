@@ -23,18 +23,6 @@ Portafolio web de Dayana Pañitrur, diseñadora con mención industrial que hoy 
 **🌐 Ver el sitio:** https://dayanapanitrur.github.io/examen-portafolio/<br>
 **📁 Repositorio:** https://github.com/dayanapanitrur/examen-portafolio
 
-![Fondo de la portada: el cursor revela la foto en píxeles](img/readme/fondo-cursor.jpg)
-
----
-
-## Datos del examen
-
-**Proyecto por:** Dayana Pañitrur
-
-**Curso:** Dispositivos periféricos y plataformas para la interacción
-
-**Impartido por:** Felipe Roa y Santiago Gaete
-
 ---
 
 ## Concepto
