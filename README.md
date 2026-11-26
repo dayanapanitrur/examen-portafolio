@@ -7,14 +7,52 @@
 **Impartido por:** 
 
 Felipe Roa
->
 
 Santiago Gaete
->
 
 ---
 
 ## Bitácora
+
+Este proyecto es mi portafolio web, en el cuál quise plasmar a través de lo visual lo que cotidianamente refleja mi mente.
+
+# Portafolio · Dayana Pañitrur
+
+Portafolio web de Dayana Pañitrur, diseñadora con mención industrial que hoy expande su práctica hacia el diseño de interacción digital. Un azul eléctrico que se rompe en píxeles para dejar ver la naturaleza.
+
+**🌐 Ver el sitio:** https://dayanapanitrur.github.io/examen-portafolio/<br>
+**📁 Repositorio:** https://github.com/dayanapanitrur/examen-portafolio
+
+![Fondo de la portada: el cursor revela la foto en píxeles](img/readme/fondo-cursor.jpg)
+
+---
+
+## Datos del examen
+
+**Proyecto por:** Dayana Pañitrur
+
+**Curso:** Dispositivos periféricos y plataformas para la interacción
+
+**Impartido por:** Felipe Roa y Santiago Gaete
+
+---
+
+## Concepto
+
+El sitio se construye sobre un contraste: un **azul eléctrico digital** (`#142BFF`), plano y saturado, que tapa una fotografía tomada por mí, del lugar donde vive mi abuelita, uno de mis lugares favoritos. Lo que quise representar en esta combinación fue el cruce que tuve entre mi mirada que por mucho tiempo estuvo enfocada en la naturaleza y este adentramiento al mundo digital. El pixel es el elemento que los conecta.
+
+La paleta de la foto (verdes oscuros, ocres y cremas) es opuesta al azul. Por eso, cuando aparecen juntos, los dos se ven más intensos. Para los textos y fondos del resto del sitio elegí un **crema** cálido (en vez de blanco puro) y un **verde musgo** sacado de la misma imagen.
+| Paleta del sitio | Paleta de la foto (colores dominantes) |
+|---|---|
+| ![Paleta del sitio](img/readme/paleta.png) | ![Paleta de la foto](img/readme/paleta-foto.png) |
+
+---
+
+## Sistema gráfico
+
+### Tipografía
+
+Uso solo **dos familias**, las dos gratuitas en Google Fonts
 
 ### Conceptos
 
