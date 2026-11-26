@@ -46,4 +46,6 @@ Aquí un ejemplo de una pequeña parte de mi código, la cual es la base o lo m�
 
 En mi caso yo agregué un `head`, un `body` y un `footer`
 
+2. **CSS:** El css contiene todo lo que es el sistema visual, los colores, cómo es la diagramación de los componentes, etc. Se conecta al sitio web a través del HTML que hace un "llamado":  ```<link rel="stylesheet" href="css/estilos.css">``` entonces cada vez que se quiere arreglar algo del estilo visual se cambia directamente en este archivo.
+
 ### Reflexión del semestre
