@@ -22,7 +22,7 @@ Cuando empecé el curso tuve que autoexplicarme estos conceptos con analogías o
 
 1. **HTML**: Corresponde a la estructura de la página web. Es donde se referencian todos los otros archivos que se utilizan, aquí no ocurre toda la complejidad, entonces cada vez que se necesite cambiar algo de los otros archivos no hay necesidad de cambiar también el html. Pueden haber más de 1 html en un solo sitio web, cuando hay solo un html a estos se les suele llamar single page.
 
-Aquí un ejemplo de una pequeña parte de mi código, la cual es la base de cualquier HTML:
+Aquí un ejemplo de una pequeña parte de mi código, la cual es la base o lo mínimo que suele tener cualquier HTML:
 
 ```cpp
 <!DOCTYPE html>
@@ -43,5 +43,7 @@ Aquí un ejemplo de una pequeña parte de mi código, la cual es la base de cual
 </head>
 
 ```
+
+En mi caso yo agregué un `head`, un `body` y un `footer`
 
 ### Reflexión del semestre
