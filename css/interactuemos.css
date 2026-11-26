@@ -1,0 +1,418 @@
+/* =====================================================================
+   INTERACTUEMOS · página sobre mí
+   ---------------------------------------------------------------------
+   Mano cromada, botón conectar, ventana de la cámara,
+   texto lateral, franja de glitch y la aparición del CD y el contacto.
+   Mismas reglas que estilos.css:
+   - Solo flexbox.
+   - Solo unidades rem y % (1rem = 16 px).
+   - Sin position.
+   - Primero desktop y al final una sola media query para mobile.
+   ===================================================================== */
+
+
+/* La huincha "sobre mí" (franja azul que se desliza) ahora vive en
+   estilos.css, porque también se usa en la sección proyectos del inicio */
+
+
+/* =====================================================================
+   2. SECCIÓN ¿INTERACTUEMOS?
+   ===================================================================== */
+
+/* Fila: texto lateral | centro (título + mano) | franja de glitch.
+   Alto mínimo de 656 px (41rem). Al cerrarse, el alto y la opacidad bajan suave */
+.interactuemos {
+  display: flex;
+  align-items: stretch;
+  min-height: 41rem;
+  overflow: hidden;
+  transition: height 0.7s ease, opacity 0.5s ease, padding 0.7s ease;
+}
+
+/* Al terminar el efecto la sección se cierra (js/interactuemos.js anima el alto) */
+.interactuemos--cerrando {
+  min-height: 0;
+  opacity: 0;
+}
+
+/* --- texto lateral (acceso sin cámara) --- */
+
+/* Botón sin estilo de botón: texto vertical que se lee de abajo hacia arriba.
+   Lexend 14 px (0.875rem) con letras separadas 22% (0.22em), como en el boceto */
+.interactuemos__lateral {
+  flex-shrink: 0;
+  align-self: flex-end;
+  margin: 0 0 2rem 1.25rem;
+  padding: 0.75rem 0.5rem;
+  border: none;
+  background: none;
+  font-family: "Lexend", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.7;
+  letter-spacing: 0.22em;
+  color: var(--negro);
+  text-align: start;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+/* Cada frase es una línea */
+.interactuemos__lateral span {
+  display: block;
+}
+
+/* Al pasar el mouse o con teclado se pinta azul y se subraya */
+.interactuemos__lateral:hover,
+.interactuemos__lateral:focus-visible {
+  color: var(--azul);
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+}
+
+.interactuemos__lateral:focus-visible {
+  outline: 0.125rem solid var(--azul);
+  outline-offset: 0.25rem;
+}
+
+/* --- centro: título arriba y escena debajo --- */
+
+.interactuemos__centro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+  gap: 0.5rem;
+  padding-top: 1.75rem;
+}
+
+/* "¿interactuemos?": Pixelify Sans 56 px (3.5rem) en minúsculas e inclinado
+   -12° como el logo (mismo sistema de títulos del sitio).
+   Cada tanto "salta" con un glitch de color (azul y verde del sitio) */
+.interactuemos__titulo {
+  margin: 0;
+  font-family: "Pixelify Sans", sans-serif;
+  font-size: 3.5rem;
+  font-weight: 400;
+  line-height: normal;
+  color: var(--negro);
+  transform: skewX(-12.02deg);
+  animation: titulo-glitch 5s steps(1) infinite;
+}
+
+@keyframes titulo-glitch {
+  0%, 90%, 100% {
+    text-shadow: none;
+    transform: skewX(-12.02deg);
+  }
+  91% {
+    text-shadow: 0.1875rem 0 var(--azul), -0.125rem 0 var(--verde);
+    transform: translateX(0.125rem) skewX(-12.02deg);
+  }
+  93% {
+    text-shadow: -0.25rem 0 var(--azul), 0.1875rem 0 var(--verde);
+    transform: translateX(-0.1875rem) skewX(-20deg);
+  }
+  95% {
+    text-shadow: 0.0625rem 0 var(--azul);
+    transform: skewX(-12.02deg);
+  }
+}
+
+/* Mientras la mano se deshace, el título también se rompe y se apaga */
+.interactuemos--disolviendo .interactuemos__titulo {
+  animation: titulo-se-va 1.6s steps(8) forwards;
+}
+
+@keyframes titulo-se-va {
+  0% {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+    text-shadow: 0.25rem 0 var(--azul), -0.25rem 0 var(--verde);
+  }
+  50% {
+    opacity: 0.8;
+    clip-path: inset(20% 0 35% 0);
+    text-shadow: -0.5rem 0 var(--azul), 0.375rem 0 var(--verde);
+  }
+  100% {
+    opacity: 0;
+    clip-path: inset(50% 0 50% 0);
+    text-shadow: none;
+  }
+}
+
+/* Escena: conectar | mano | cámara, en fila y centrados.
+   Los lados miden lo mismo (13rem) para que la mano quede al centro */
+.interactuemos__escena {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  gap: 2.5rem;
+  width: 100%;
+}
+
+/* --- botón conectar y aviso --- */
+
+.interactuemos__conectar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 0.75rem;
+  width: 13rem;
+}
+
+/* El botón "conectar" usa el estilo común .boton .boton--grande (estilos.css).
+   Conectado: queda relleno de verde con texto crema, como en hover */
+.boton-conectar--activo,
+.boton-conectar--activo:disabled {
+  background-color: var(--verde);
+  color: var(--crema);
+  opacity: 1;
+}
+
+/* Aviso bajo el botón: Lexend 14 px (0.875rem) en gris, centrado */
+.interactuemos__estado {
+  min-height: 2.6rem;
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  text-align: center;
+  color: var(--gris);
+}
+
+/* Con la cámara encendida el aviso pasa a azul y late para que se note */
+.interactuemos--conectado .interactuemos__estado {
+  font-weight: 500;
+  color: var(--azul);
+  animation: aviso-late 1.6s ease-in-out infinite;
+}
+
+@keyframes aviso-late {
+  50% { opacity: 0.55; }
+}
+
+/* --- la mano --- */
+
+/* Lugar de la mano 3D: 352 × 528 px (22rem × 33rem) */
+.interactuemos__mano {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  width: 22rem;
+  height: 33rem;
+}
+
+/* Si el navegador no puede dibujar 3D queda un texto con borde punteado */
+.interactuemos--sin-3d .interactuemos__mano {
+  padding: 2rem;
+  border: 0.0625rem dashed var(--gris);
+  border-radius: 1rem;
+  font-size: 1rem;
+  text-align: center;
+  color: var(--gris);
+}
+
+/* En pantallas táctiles la mano es un botón */
+.interactuemos--tactil .interactuemos__mano {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.interactuemos__mano:focus-visible {
+  outline: 0.125rem solid var(--azul);
+  outline-offset: 0.25rem;
+  border-radius: 1rem;
+}
+
+/* --- ventanita de la cámara --- */
+
+/* Etiqueta, imagen y barra de avance en columna.
+   Invisible hasta conectar; aparece subiendo 8 px (0.5rem) */
+.camara {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: 0.375rem;
+  width: 13rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(0.5rem);
+  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0s 0.4s;
+}
+
+.camara--activa {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity 0.4s ease, transform 0.4s ease, visibility 0s;
+}
+
+/* "CAM 01 · buscando mano": Lexend 10 px (0.625rem) en verde musgo, como el cursor */
+.camara__etiqueta {
+  font-family: "Lexend", sans-serif;
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--verde);
+}
+
+/* Imagen 4:3 con esquinas de 12 px (0.75rem) */
+.camara__imagen {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border: 0.0625rem solid rgba(26, 26, 26, 0.15);
+  border-radius: 0.75rem;
+  background-color: var(--negro);
+}
+
+/* Barra que se llena mientras la mano se mantiene abierta */
+.camara__barra {
+  display: flex;
+  height: 0.1875rem;
+  overflow: hidden;
+  border-radius: 62.4375rem;
+  background-color: var(--gris-claro);
+}
+
+.camara__progreso {
+  flex-grow: 1;
+  background-color: var(--verde);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.1s linear;
+}
+
+/* --- aviso de mobile y franja de glitch --- */
+
+/* "toca la mano…": solo en pantallas táctiles */
+.interactuemos__pista {
+  display: none;
+  margin: 0 0 2rem;
+  font-size: 0.875rem;
+  color: var(--gris);
+  animation: aviso-late 2.4s ease-in-out infinite;
+}
+
+.interactuemos--tactil .interactuemos__pista {
+  display: block;
+}
+
+/* En pantallas táctiles no hay botón, ni cámara, ni texto lateral: se toca la mano */
+.interactuemos--tactil .interactuemos__conectar,
+.interactuemos--tactil .camara,
+.interactuemos--tactil .interactuemos__lateral {
+  display: none;
+}
+
+/* Franja de puntos en el borde derecho: 40 px (2.5rem) de ancho y todo el alto */
+.interactuemos__glitch {
+  flex-shrink: 0;
+  align-self: stretch;
+  width: 2.5rem;
+  height: auto;
+}
+
+
+/* =====================================================================
+   3. APARICIÓN DEL CD Y EL CONTACTO
+   ===================================================================== */
+
+/* Las secciones usan display: flex, que le gana al atributo hidden.
+   Esta regla (más específica) hace que hidden realmente las oculte */
+.interactuemos[hidden],
+.sobre-mi[hidden],
+.contacto[hidden] {
+  display: none;
+}
+
+/* Aparecen "cargando" de arriba hacia abajo a saltos, como pantalla digital */
+.revelado {
+  animation: aparecer-digital 0.9s steps(9) both;
+}
+
+.contacto.revelado {
+  animation-delay: 0.25s;
+}
+
+@keyframes aparecer-digital {
+  from {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* Con "reducir movimiento" activado, todo se mueve mucho menos
+   (la huincha se frena en estilos.css) */
+.movimiento-reducido .interactuemos__titulo,
+.movimiento-reducido .interactuemos__estado,
+.movimiento-reducido .interactuemos__pista {
+  animation: none;
+}
+
+.movimiento-reducido .revelado {
+  animation-duration: 0.2s;
+}
+
+
+/* =====================================================================
+   4. MOBILE (pantallas de hasta 768 px = 48rem)
+   ===================================================================== */
+
+@media (max-width: 48rem) {
+
+  .interactuemos {
+    min-height: 38rem;
+  }
+
+  /* Texto lateral más chico (si se ve en una ventana angosta con mouse) */
+  .interactuemos__lateral {
+    margin: 0 0 1rem 0.25rem;
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+  }
+
+  .interactuemos__centro {
+    padding-top: 1.5rem;
+  }
+
+  /* Título 36 px (2.25rem) */
+  .interactuemos__titulo {
+    font-size: 2.25rem;
+  }
+
+  /* En columna: mano, luego conectar y cámara */
+  .interactuemos__escena {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .interactuemos__mano {
+    width: 16rem;
+    height: 26rem;
+  }
+
+  .interactuemos__conectar {
+    order: 2;
+  }
+
+  .camara {
+    order: 3;
+    width: 10rem;
+  }
+
+  /* Franja de glitch más angosta: 20 px (1.25rem) */
+  .interactuemos__glitch {
+    width: 1.25rem;
+  }
+}

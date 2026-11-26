@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portafolio de Dayana Pañitrur, diseñadora con mención industrial.">
+  <meta name="author" content="Dayana Pañitrur">
+  <title>Dayana Pañitrur — Portafolio</title>
+
+  <!-- Tipografías: Lexend (textos) y Pixelify Sans (logo) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=Pixelify+Sans:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body class="pagina-inicio">
+
+  <!-- Fondo de la portada y de la zona de quiebre: cuadrícula invisible de píxeles
+       azules que se rompen y dejan ver pedacitos de esta foto (main.js) -->
+  <canvas class="fondo-pintura" data-foto="img/fondo-portada.jpg" aria-hidden="true"></canvas>
+
+  <header class="header">
+    <nav class="nav" aria-label="Navegación principal">
+      <ul class="nav__lista">
+        <li><a class="nav__enlace" href="#inicio">inicio</a></li>
+        <li><a class="nav__enlace" href="#proyectos">proyectos</a></li>
+        <li><a class="nav__enlace" href="sobre-mi.html">sobre mí</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- PORTADA: logo sobre el fondo azul; al pasar el mouse el azul se "pinta" y deja ver la foto -->
+    <section class="portada" id="inicio" data-id="00" data-cursor="portada">
+      <h1 class="logo" aria-label="Dayana Pañitrur">
+        <span class="logo__linea">dayana</span>
+        <span class="logo__linea">pañitrur</span>
+      </h1>
+
+      <!-- Pie de la portada: botón para bajar a proyectos entre dos cruces "+".
+           Va dentro de la portada para que se vea desde la primera pantalla -->
+      <div class="portada__pie">
+        <span class="portada__cruz" aria-hidden="true">+</span>
+        <a class="boton boton--grande" href="#proyectos" data-cursor="ver proyectos">
+          ver proyectos
+          <span class="portada__flecha" aria-hidden="true">↓</span>
+        </a>
+        <span class="portada__cruz" aria-hidden="true">+</span>
+      </div>
+    </section>
+
+    <!-- QUIEBRE: el borde de la portada se rompe en píxeles (lo dibuja main.js en el canvas) -->
+    <div class="quiebre" data-id="01" data-cursor="baja" aria-hidden="true"></div>
+
+    <!-- PROYECTOS: pila de vinilos. Primero los 3 proyectos del ramo (interacción digital). Hover (desktop) o toque (mobile) saca un vinilo;
+         con scroll o swipe la pila avanza en loop -->
+    <section class="proyectos" id="proyectos" data-id="01" data-cursor="proyectos">
+
+      <!-- HUINCHA: franja azul con "proyectos" que se desliza hacia el lado
+           (igual que en sobre mí). El texto va dos veces para que el loop no tenga cortes -->
+      <h2 class="huincha" aria-label="Proyectos">
+        <span class="huincha__pista" aria-hidden="true">
+          <span class="huincha__grupo">
+            <span>proyectos</span><span>+</span><span>proyectos</span><span>+</span><span>proyectos</span><span>+</span><span>proyectos</span><span>+</span>
+          </span>
+          <span class="huincha__grupo">
+            <span>proyectos</span><span>+</span><span>proyectos</span><span>+</span><span>proyectos</span><span>+</span><span>proyectos</span><span>+</span>
+          </span>
+        </span>
+      </h2>
+
+      <div class="carrusel">
+        <ul class="pila" aria-label="Proyectos">
+          <li class="vinilo" style="--i: 0">
+            <a class="vinilo__contenido" href="proyectos/multirealidades-sys.html">
+              <span class="vinilo__portada">
+                <img src="img/proyectos/multirealidades-sys.jpg" alt="Interfaz de Multirealidades.sys: ventanas de sistema operativo con la cámara procesada en píxeles azules">
+              </span>
+              <span class="vinilo__nombre">Multirealidades.sys</span>
+            </a>
+          </li>
+          <li class="vinilo" style="--i: 1">
+            <a class="vinilo__contenido" href="proyectos/espectro.html">
+              <span class="vinilo__portada">
+                <img src="img/proyectos/espectro.jpg" alt="Interfaz de Espectro: título en tipografía serif sobre un degradado rosado y naranjo, con el menú de modos">
+              </span>
+              <span class="vinilo__nombre">Espectro</span>
+            </a>
+          </li>
+          <li class="vinilo" style="--i: 2">
+            <a class="vinilo__contenido" href="proyectos/contrapresion.html">
+              <span class="vinilo__portada">
+                <img src="img/proyectos/contrapresion.jpg" alt="Pantalla de inicio de Contrapresión: título en letras de esténcil crema y rojo sobre la Alameda de noche">
+              </span>
+              <span class="vinilo__nombre">Contrapresión</span>
+            </a>
+          </li>
+          <li class="vinilo" style="--i: 3">
+            <a class="vinilo__contenido" href="proyectos/banca-modular.html">
+              <span class="vinilo__portada">
+                <img src="img/proyectos/banca-modular.jpg" alt="Maqueta de madera de la Banca modular">
+              </span>
+              <span class="vinilo__nombre">Banca modular</span>
+            </a>
+          </li>
+          <li class="vinilo" style="--i: 4">
+            <a class="vinilo__contenido" href="proyectos/sin-te.html">
+              <span class="vinilo__portada">
+                <img src="img/proyectos/sin-te.jpg" alt="Sintetizador Sin_Te en su carcasa de acrílico y madera">
+              </span>
+              <span class="vinilo__nombre">Sin_Te</span>
+            </a>
+          </li>
+          <li class="vinilo" style="--i: 5">
+            <a class="vinilo__contenido" href="proyectos/mimus-thenca.html">
+              <span class="vinilo__portada">
+                <img src="img/proyectos/tenca.jpg" alt="Escultura en madera de la Tenca Chilena">
+              </span>
+              <span class="vinilo__nombre">Mimus thenca</span>
+            </a>
+          </li>
+          <li class="vinilo" style="--i: 6">
+            <a class="vinilo__contenido" href="proyectos/seq-01-y-seq-02.html">
+              <span class="vinilo__portada">
+                <img src="img/proyectos/secuenciadores.jpg" alt="Placas PCB de los secuenciadores SEQ-01 y SEQ-02">
+              </span>
+              <span class="vinilo__nombre">SEQ-01 y SEQ-02</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER: el azul sube rompiéndose en píxeles y abajo van las redes.
+       Íconos: Simple Icons (simpleicons.org, licencia CC0), cargados desde jsDelivr -->
+  <footer class="pie" data-cursor="redes">
+    <canvas class="borde-pixel borde-pixel--arriba" aria-hidden="true"></canvas>
+    <div class="pie__contenido">
+      <p class="pie__firma">dayana pañitrur</p>
+      <ul class="pie__redes" aria-label="Redes">
+        <li>
+          <a class="pie__red" href="https://github.com/dayanapanitrur" target="_blank" rel="noopener" aria-label="GitHub de Dayana Pañitrur" data-cursor="github">
+            <span class="pie__icono pie__icono--github" aria-hidden="true"></span>
+          </a>
+        </li>
+        <li>
+          <a class="pie__red" href="https://www.instagram.com/svfikv/" target="_blank" rel="noopener" aria-label="Instagram de Dayana Pañitrur (@svfikv)" data-cursor="instagram">
+            <span class="pie__icono pie__icono--instagram" aria-hidden="true"></span>
+          </a>
+        </li>
+      </ul>
+      <p class="pie__nota">portafolio · 2026</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

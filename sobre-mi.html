@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sobre Dayana Pañitrur, diseñadora con mención industrial, y sus datos de contacto.">
+  <meta name="author" content="Dayana Pañitrur">
+  <title>Sobre mí — Dayana Pañitrur</title>
+
+  <!-- Tipografías: Lexend (textos, cursor y cámara) y Pixelify Sans (títulos) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=Pixelify+Sans:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/estilos.css">
+  <link rel="stylesheet" href="css/interactuemos.css">
+
+  <!-- three.js para el modelo 3D del CD -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body class="pagina-sobre-mi">
+
+  <!-- En esta página el fondo es crema, así que el texto del header es azul desde el inicio -->
+  <header class="header header--claro">
+    <nav class="nav" aria-label="Navegación principal">
+      <ul class="nav__lista">
+        <li><a class="nav__enlace" href="index.html#inicio">inicio</a></li>
+        <li><a class="nav__enlace" href="index.html#proyectos">proyectos</a></li>
+        <li><a class="nav__enlace" href="sobre-mi.html" aria-current="page">sobre mí</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- HUINCHA: franja azul con "sobre mí" que se desliza hacia el lado.
+         El texto va dos veces para que el loop no tenga cortes -->
+    <h1 class="huincha" aria-label="Sobre mí" data-id="02" data-cursor="sobre mí">
+      <span class="huincha__pista" aria-hidden="true">
+        <span class="huincha__grupo">
+          <span>sobre mí</span><span>+</span><span>sobre mí</span><span>+</span><span>sobre mí</span><span>+</span><span>sobre mí</span><span>+</span>
+        </span>
+        <span class="huincha__grupo">
+          <span>sobre mí</span><span>+</span><span>sobre mí</span><span>+</span><span>sobre mí</span><span>+</span><span>sobre mí</span><span>+</span>
+        </span>
+      </span>
+    </h1>
+
+    <!-- BORDE DE PÍXELES: el azul de la huincha se rompe en cuadraditos (main.js) -->
+    <canvas class="borde-pixel" aria-hidden="true"></canvas>
+
+    <!-- ¿INTERACTUEMOS?: mano cromada en 3D. Al abrir la mano frente a la cámara
+         (o al tocar el texto lateral) la mano se deshace en píxeles y aparece lo de abajo.
+         En mobile se toca la mano. Lo maneja js/interactuemos.js -->
+    <section class="interactuemos" id="interactuemos" data-id="02" data-cursor="interactuemos">
+
+      <!-- Acceso simple (accesibilidad): sin cámara, solo hay que presionarlo -->
+      <button class="interactuemos__lateral" type="button" data-cursor="entrar sin cámara">
+        <span>a veces las conexiones no son recíprocas y eso</span>
+        <span>está bien, así que también puedes acceder aquí :)</span>
+      </button>
+
+      <div class="interactuemos__centro">
+        <h2 class="interactuemos__titulo" data-texto="¿interactuemos?">¿interactuemos?</h2>
+
+        <div class="interactuemos__escena">
+          <!-- Izquierda: botón conectar y el aviso de qué hacer -->
+          <div class="interactuemos__conectar">
+            <button class="boton boton--grande boton-conectar" type="button" data-cursor="conectar cámara">conectar</button>
+            <p class="interactuemos__estado" aria-live="polite"></p>
+          </div>
+
+          <!-- Centro: la mano (en mobile es un botón que se toca) -->
+          <div class="interactuemos__mano" data-cursor="mano"></div>
+
+          <!-- Derecha: ventanita de la cámara, solo mientras está conectada -->
+          <div class="camara" aria-hidden="true">
+            <span class="camara__etiqueta">CAM 01 · <span class="camara__modo">buscando mano</span></span>
+            <canvas class="camara__imagen" width="320" height="240"></canvas>
+            <span class="camara__barra"><span class="camara__progreso"></span></span>
+          </div>
+        </div>
+
+        <p class="interactuemos__pista">toca la mano para conocerme :)</p>
+      </div>
+
+      <!-- Franja de glitch (puntos) en el borde derecho -->
+      <canvas class="interactuemos__glitch" aria-hidden="true"></canvas>
+    </section>
+
+    <!-- SOBRE MÍ: caja de CD en 3D (tiene impreso "sobre mí").
+         Queda oculta hasta interactuar. Se abre con hover (desktop) o con un toque (mobile) -->
+    <section class="sobre-mi" id="sobre-mi" data-id="02" data-cursor="sobre mí" hidden>
+      <div class="contenedor sobre-mi__contenedor">
+        <div class="cd" id="cd-3d" data-cursor="cd" role="img" aria-label="Caja de CD en 3D con mi presentación en la portada y una foto mía en el disco">
+          <!-- Texto de respaldo: se ve solo si el modelo 3D no carga -->
+          <div class="cd__respaldo">
+            <p>Holaa :) soy Dayana, diseñadora con mención industrial.</p>
+            <p>Actualmente estoy expandiendo mi práctica hacia el diseño de interacción digital. Me motiva crear desde la inspiración del sonido hasta la experimentación visual y objetual.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACTO: título y datos en azul sobre el fondo crema (también oculto hasta interactuar) -->
+    <section class="contacto" id="contacto" data-id="03" data-cursor="contacto" hidden>
+      <h2 class="contacto__titulo">contáctame! :)</h2>
+
+      <ul class="contacto__datos">
+        <li>
+          <a class="contacto__enlace" data-cursor="correo" href="mailto:dpanitrur@gmail.com">
+            <span class="contacto__etiqueta">correo:</span>
+            <span class="contacto__valor">dpanitrur@gmail.com</span>
+          </a>
+        </li>
+        <li>
+          <a class="contacto__enlace" data-cursor="github" href="https://github.com/dayanapanitrur" target="_blank" rel="noopener">
+            <span class="contacto__etiqueta">gitHub:</span>
+            <span class="contacto__valor">dayanapanitrur</span>
+          </a>
+        </li>
+        <li>
+          <a class="contacto__enlace" data-cursor="linkedin" href="https://cl.linkedin.com/in/dayana-belén-pañitrur-caniupán-339201444" target="_blank" rel="noopener">
+            <span class="contacto__etiqueta">linkedIn:</span>
+            <span class="contacto__valor">dayana pañitrur</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+  </main>
+
+  <!-- FOOTER: el azul sube rompiéndose en píxeles y abajo van las redes.
+       Íconos: Simple Icons (simpleicons.org, licencia CC0), cargados desde jsDelivr -->
+  <footer class="pie" data-cursor="redes">
+    <canvas class="borde-pixel borde-pixel--arriba" aria-hidden="true"></canvas>
+    <div class="pie__contenido">
+      <p class="pie__firma">dayana pañitrur</p>
+      <ul class="pie__redes" aria-label="Redes">
+        <li>
+          <a class="pie__red" href="https://github.com/dayanapanitrur" target="_blank" rel="noopener" aria-label="GitHub de Dayana Pañitrur" data-cursor="github">
+            <span class="pie__icono pie__icono--github" aria-hidden="true"></span>
+          </a>
+        </li>
+        <li>
+          <a class="pie__red" href="https://www.instagram.com/svfikv/" target="_blank" rel="noopener" aria-label="Instagram de Dayana Pañitrur (@svfikv)" data-cursor="instagram">
+            <span class="pie__icono pie__icono--instagram" aria-hidden="true"></span>
+          </a>
+        </li>
+      </ul>
+      <p class="pie__nota">portafolio · 2026</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script type="module" src="js/interactuemos.js"></script>
+  <script type="module" src="js/sobre-mi.js"></script>
+</body>
+</html>

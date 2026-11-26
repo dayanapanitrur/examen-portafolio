@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Espectro — proyecto de interacción digital de Dayana Pañitrur.">
+  <meta name="author" content="Dayana Pañitrur">
+  <title>Espectro — Dayana Pañitrur</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=Pixelify+Sans:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body class="pagina-proyecto">
+
+  <!-- Header: el mismo de todo el sitio, con texto azul desde el inicio -->
+  <header class="header header--claro">
+    <nav class="nav" aria-label="Navegación principal">
+      <ul class="nav__lista">
+        <li><a class="nav__enlace" href="../index.html#inicio">inicio</a></li>
+        <li><a class="nav__enlace nav__enlace--activo" href="../index.html#proyectos">proyectos</a></li>
+        <li><a class="nav__enlace" href="../sobre-mi.html">sobre mí</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- HUINCHA: franja azul con el nombre del proyecto que se desliza.
+       Es decorativa (el nombre ya está en el título), por eso aria-hidden -->
+  <div class="huincha" data-id="06" data-cursor="Espectro" aria-hidden="true">
+    <span class="huincha__pista">
+      <span class="huincha__grupo"><span>Espectro</span><span>+</span><span>Espectro</span><span>+</span><span>Espectro</span><span>+</span><span>Espectro</span><span>+</span><span>Espectro</span><span>+</span><span>Espectro</span><span>+</span></span>
+      <span class="huincha__grupo"><span>Espectro</span><span>+</span><span>Espectro</span><span>+</span><span>Espectro</span><span>+</span><span>Espectro</span><span>+</span><span>Espectro</span><span>+</span><span>Espectro</span><span>+</span></span>
+    </span>
+  </div>
+
+  <!-- BORDE DE PÍXELES: el azul de la huincha se rompe en cuadraditos (main.js) -->
+  <canvas class="borde-pixel" aria-hidden="true"></canvas>
+
+  <main class="proyecto" data-id="06" data-cursor="Espectro">
+    <!-- Botón volver: regresa a la sección proyectos del inicio -->
+    <a class="boton boton-volver" data-cursor="volver" href="../index.html#proyectos">
+      <svg class="boton-volver__icono" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path d="M15.8333 10H4.16667M9.16667 5L4.16667 10L9.16667 15" stroke="currentColor" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      proyectos
+    </a>
+
+    <article class="proyecto__ficha">
+
+      <!-- NOMBRE Y AÑO -->
+      <header class="proyecto__encabezado">
+        <div class="proyecto__titulo-anio">
+          <h1 class="proyecto__nombre">Espectro</h1>
+          <p class="proyecto__anio">2026</p>
+        </div>
+        <ul class="proyecto__areas" aria-label="Áreas">
+          <li class="proyecto__area">interacción digital</li>
+          <li class="proyecto__area">T06</li>
+        </ul>
+      </header>
+
+      <!-- VIDEO de la experiencia funcionando (videos/espectro.mp4).
+           Se ve la imagen; con el cursor encima cambia al video y al salir vuelve
+           a la imagen. En el teléfono, cada toque cambia entre imagen y video (main.js) -->
+      <figure class="proyecto__imagenes proyecto__video" data-cursor="ver video">
+        <img class="proyecto__poster" src="../img/proyectos/espectro-pantalla.jpg" alt="Pantalla de inicio de Espectro sobre un degradado rosado y naranjo">
+        <video muted loop playsinline preload="metadata" aria-label="Video de la experiencia funcionando">
+          <source src="../videos/espectro.mp4" type="video/mp4">
+        </video>
+        <figcaption class="proyecto__pendiente">
+          <span>[ video pendiente ]</span>
+          <span class="proyecto__pendiente-ruta">videos/espectro.mp4</span>
+        </figcaption>
+      </figure>
+
+      <!-- DESCRIPCIÓN Y AUTORES -->
+      <section class="proyecto__bloque" aria-labelledby="titulo-descripcion">
+        <h2 class="proyecto__etiqueta" id="titulo-descripcion">descripción</h2>
+        <p class="proyecto__texto">Sitio web interactivo que busca traducir expresiones faciales en color y sonido en tiempo real, vinculando el espectro emocional, el visible y el sonoro. Mediante <code>face-api.js</code> reconoce emociones a través de la cámara o un video, les asigna un color y sintetiza notas con <code>Tone.js</code> en dos modos: detección directa de rostros y un escáner que recorre la imagen disparando sonidos.</p>
+        <p class="proyecto__texto"><strong>Autores:</strong> Pérez, Pañitrur / T06 · Diseño de Proyectos de Interacción Digital</p>
+      </section>
+
+      <!-- LINKS: repositorio y experiencia en GitHub Pages -->
+      <section class="proyecto__bloque" aria-labelledby="titulo-repositorio">
+        <h2 class="proyecto__etiqueta" id="titulo-repositorio">repositorio</h2>
+        <a class="boton" href="https://github.com/isipm08/espectro" target="_blank" rel="noopener" data-cursor="repositorio">
+          github.com/isipm08/espectro
+          <span aria-hidden="true">↗</span>
+        </a>
+      </section>
+
+      <section class="proyecto__bloque" aria-labelledby="titulo-experiencia">
+        <h2 class="proyecto__etiqueta" id="titulo-experiencia">experiencia en GitHub Pages</h2>
+        <a class="boton" href="https://isipm08.github.io/espectro/" target="_blank" rel="noopener" data-cursor="ver experiencia">
+          isipm08.github.io/espectro
+          <span aria-hidden="true">↗</span>
+        </a>
+      </section>
+    </article>
+  </main>
+
+  <!-- FOOTER: el azul sube rompiéndose en píxeles y abajo van las redes.
+       Íconos: Simple Icons (simpleicons.org, licencia CC0), cargados desde jsDelivr -->
+  <footer class="pie" data-cursor="redes">
+    <canvas class="borde-pixel borde-pixel--arriba" aria-hidden="true"></canvas>
+    <div class="pie__contenido">
+      <p class="pie__firma">dayana pañitrur</p>
+      <ul class="pie__redes" aria-label="Redes">
+        <li>
+          <a class="pie__red" href="https://github.com/dayanapanitrur" target="_blank" rel="noopener" aria-label="GitHub de Dayana Pañitrur" data-cursor="github">
+            <span class="pie__icono pie__icono--github" aria-hidden="true"></span>
+          </a>
+        </li>
+        <li>
+          <a class="pie__red" href="https://www.instagram.com/svfikv/" target="_blank" rel="noopener" aria-label="Instagram de Dayana Pañitrur (@svfikv)" data-cursor="instagram">
+            <span class="pie__icono pie__icono--instagram" aria-hidden="true"></span>
+          </a>
+        </li>
+      </ul>
+      <p class="pie__nota">portafolio · 2026</p>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

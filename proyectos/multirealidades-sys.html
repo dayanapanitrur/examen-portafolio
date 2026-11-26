@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Multirealidades.sys — proyecto de interacción digital de Dayana Pañitrur.">
+  <meta name="author" content="Dayana Pañitrur">
+  <title>Multirealidades.sys — Dayana Pañitrur</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&family=Pixelify+Sans:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body class="pagina-proyecto">
+
+  <!-- Header: el mismo de todo el sitio, con texto azul desde el inicio -->
+  <header class="header header--claro">
+    <nav class="nav" aria-label="Navegación principal">
+      <ul class="nav__lista">
+        <li><a class="nav__enlace" href="../index.html#inicio">inicio</a></li>
+        <li><a class="nav__enlace nav__enlace--activo" href="../index.html#proyectos">proyectos</a></li>
+        <li><a class="nav__enlace" href="../sobre-mi.html">sobre mí</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- HUINCHA: franja azul con el nombre del proyecto que se desliza.
+       Es decorativa (el nombre ya está en el título), por eso aria-hidden -->
+  <div class="huincha" data-id="05" data-cursor="Multirealidades.sys" aria-hidden="true">
+    <span class="huincha__pista">
+      <span class="huincha__grupo"><span>Multirealidades.sys</span><span>+</span><span>Multirealidades.sys</span><span>+</span><span>Multirealidades.sys</span><span>+</span><span>Multirealidades.sys</span><span>+</span><span>Multirealidades.sys</span><span>+</span><span>Multirealidades.sys</span><span>+</span></span>
+      <span class="huincha__grupo"><span>Multirealidades.sys</span><span>+</span><span>Multirealidades.sys</span><span>+</span><span>Multirealidades.sys</span><span>+</span><span>Multirealidades.sys</span><span>+</span><span>Multirealidades.sys</span><span>+</span><span>Multirealidades.sys</span><span>+</span></span>
+    </span>
+  </div>
+
+  <!-- BORDE DE PÍXELES: el azul de la huincha se rompe en cuadraditos (main.js) -->
+  <canvas class="borde-pixel" aria-hidden="true"></canvas>
+
+  <main class="proyecto" data-id="05" data-cursor="Multirealidades.sys">
+    <!-- Botón volver: regresa a la sección proyectos del inicio -->
+    <a class="boton boton-volver" data-cursor="volver" href="../index.html#proyectos">
+      <svg class="boton-volver__icono" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path d="M15.8333 10H4.16667M9.16667 5L4.16667 10L9.16667 15" stroke="currentColor" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      proyectos
+    </a>
+
+    <article class="proyecto__ficha">
+
+      <!-- NOMBRE Y AÑO -->
+      <header class="proyecto__encabezado">
+        <div class="proyecto__titulo-anio">
+          <h1 class="proyecto__nombre">Multirealidades.sys</h1>
+          <p class="proyecto__anio">2026</p>
+        </div>
+        <ul class="proyecto__areas" aria-label="Áreas">
+          <li class="proyecto__area">interacción digital</li>
+          <li class="proyecto__area">T03</li>
+        </ul>
+      </header>
+
+      <!-- VIDEO de la experiencia funcionando (videos/multirealidades-sys.mp4).
+           Se ve la imagen; con el cursor encima cambia al video y al salir vuelve
+           a la imagen. En el teléfono, cada toque cambia entre imagen y video (main.js) -->
+      <figure class="proyecto__imagenes proyecto__video" data-cursor="ver video">
+        <img class="proyecto__poster" src="../img/proyectos/multirealidades-sys-pantalla.jpg" alt="Pantalla de Multirealidades.sys con sus tres ventanas de sistema">
+        <video muted loop playsinline preload="metadata" aria-label="Video de la experiencia funcionando">
+          <source src="../videos/multirealidades-sys.mp4" type="video/mp4">
+        </video>
+        <figcaption class="proyecto__pendiente">
+          <span>[ video pendiente ]</span>
+          <span class="proyecto__pendiente-ruta">videos/multirealidades-sys.mp4</span>
+        </figcaption>
+      </figure>
+
+      <!-- DESCRIPCIÓN Y AUTORES -->
+      <section class="proyecto__bloque" aria-labelledby="titulo-descripcion">
+        <h2 class="proyecto__etiqueta" id="titulo-descripcion">descripción</h2>
+        <p class="proyecto__texto">Multirealidades explora cómo el cuerpo altera la realidad digital a través de la cámara web. Opera con tres sistemas simultáneos: OpenCV distorsiona la imagen cuando el usuario permanece quieto, MediaPipe rastrea gestos de las manos para proyectar partículas sobre la silueta, y Three.js permite escalar y desplazar un modelo 3D en tiempo real mediante gestos de los dedos.</p>
+        <p class="proyecto__texto"><strong>Autores:</strong> Alvarez, Pañitrur / T03 · Diseño de Proyectos de Interacción Digital</p>
+      </section>
+
+      <!-- LINKS: repositorio y experiencia en GitHub Pages -->
+      <section class="proyecto__bloque" aria-labelledby="titulo-repositorio">
+        <h2 class="proyecto__etiqueta" id="titulo-repositorio">repositorio</h2>
+        <a class="boton" href="https://github.com/dayanapanitrur/Multirealidades.sys" target="_blank" rel="noopener" data-cursor="repositorio">
+          github.com/dayanapanitrur/Multirealidades.sys
+          <span aria-hidden="true">↗</span>
+        </a>
+      </section>
+
+      <section class="proyecto__bloque" aria-labelledby="titulo-experiencia">
+        <h2 class="proyecto__etiqueta" id="titulo-experiencia">experiencia en GitHub Pages</h2>
+        <a class="boton" href="https://dayanapanitrur.github.io/Multirealidades.sys/" target="_blank" rel="noopener" data-cursor="ver experiencia">
+          dayanapanitrur.github.io/Multirealidades.sys
+          <span aria-hidden="true">↗</span>
+        </a>
+      </section>
+    </article>
+  </main>
+
+  <!-- FOOTER: el azul sube rompiéndose en píxeles y abajo van las redes.
+       Íconos: Simple Icons (simpleicons.org, licencia CC0), cargados desde jsDelivr -->
+  <footer class="pie" data-cursor="redes">
+    <canvas class="borde-pixel borde-pixel--arriba" aria-hidden="true"></canvas>
+    <div class="pie__contenido">
+      <p class="pie__firma">dayana pañitrur</p>
+      <ul class="pie__redes" aria-label="Redes">
+        <li>
+          <a class="pie__red" href="https://github.com/dayanapanitrur" target="_blank" rel="noopener" aria-label="GitHub de Dayana Pañitrur" data-cursor="github">
+            <span class="pie__icono pie__icono--github" aria-hidden="true"></span>
+          </a>
+        </li>
+        <li>
+          <a class="pie__red" href="https://www.instagram.com/svfikv/" target="_blank" rel="noopener" aria-label="Instagram de Dayana Pañitrur (@svfikv)" data-cursor="instagram">
+            <span class="pie__icono pie__icono--instagram" aria-hidden="true"></span>
+          </a>
+        </li>
+      </ul>
+      <p class="pie__nota">portafolio · 2026</p>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

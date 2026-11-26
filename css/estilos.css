@@ -1,0 +1,1455 @@
+/* =====================================================================
+   PORTAFOLIO · DAYANA PAÑITRUR
+   ---------------------------------------------------------------------
+   Reglas de este archivo:
+   - Solo flexbox (sin grid ni frameworks).
+   - Solo unidades rem y %. 1rem = 16 px (ej: 24 px = 1.5rem).
+   - position solo en el header (sticky arriba).
+   - Primero va el estilo de desktop y al final una sola media query
+     para mobile.
+   ===================================================================== */
+
+
+/* =====================================================================
+   1. VARIABLES (colores del UI Kit de Figma)
+   ===================================================================== */
+
+/* Guarda los colores del diseño con un nombre para reutilizarlos en todo el archivo */
+:root {
+  --azul: #142BFF;          /* color principal: portada, títulos y contacto */
+  --crema: #FFFEFC;         /* fondo general y texto sobre azul */
+  --negro: #1A1A1A;         /* texto principal */
+  --verde: #3B7034;         /* verde musgo: cursor, botones y año (contraste 5.9 sobre crema) */
+  --verde-oscuro: #2A5226;  /* botones cuando se presionan */
+  --gris: #73716B;          /* textos de ayuda */
+  --gris-claro: #E5E5E5;    /* fondo de las portadas de vinilo mientras cargan */
+  --blanco: #FFFFFF;        /* fondo de la ventana y de las páginas de proyecto */
+  --fondo-imagen: #F4F3EF;  /* fondo de la caja de imágenes mientras carga la foto */
+}
+
+
+/* --velo es cuánto se ve el fondo crema del header (0% = nada, 100% = entero).
+   Se registra con @property para que el navegador pueda animarlo suave */
+@property --velo {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+
+/* --color-velo es el color de ese fondo: azul sobre la portada y crema
+   en el resto. También se registra para que cambie de color suave */
+@property --color-velo {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #142BFF;
+}
+
+
+/* =====================================================================
+   2. BASE
+   ===================================================================== */
+
+/* Hace que el ancho y alto de cada caja incluyan su borde y su relleno,
+   así las medidas no se descuadran */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Hace que los saltos a #inicio y #proyectos se deslicen suave,
+   deja que el body pueda medir el 100% del alto de la ventana
+   y le da fondo blanco a la ventana, así el fondo de cada página
+   se calcula sobre el alto del body y no se repite */
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+  background-color: var(--blanco);
+}
+
+/* Quita el margen que el navegador pone alrededor de la página
+   y define la tipografía y el color de texto base.
+   Ordena la página en una columna flex (así el cursor puede quedar encima con z-index)
+   y recorta lo que se salga hacia los lados */
+body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  min-height: 100%;
+  overflow-x: clip;
+  font-family: "Lexend", sans-serif;
+  font-weight: 400;
+  color: var(--negro);
+}
+
+/* Evita que las imágenes se salgan de su caja */
+img {
+  display: block;
+  max-width: 100%;
+}
+
+
+/* =====================================================================
+   2b. BOTONES (estilo común de todo el sitio)
+   Lo usan: "← proyectos" en cada proyecto, "ver proyectos" en el inicio
+   y "conectar" en sobre mí. En el HTML llevan la clase "boton"
+   (y "boton--grande" si van más grandes)
+   ===================================================================== */
+
+/* En reposo: píldora con contorno verde de 1.5 px (0.09375rem) y fondo crema,
+   ícono y texto separados 8 px (0.5rem). Lexend Medium 16 px (1rem) en verde */
+.boton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.5rem 1.125rem;
+  border: 0.09375rem solid var(--verde);
+  border-radius: 62.4375rem;
+  background-color: var(--crema);
+  font-family: "Lexend", sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--verde);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hover: se rellena de verde y el texto y la flecha pasan a crema */
+.boton:hover {
+  background-color: var(--verde);
+  color: var(--crema);
+}
+
+/* Presionado: relleno verde más oscuro */
+.boton:active {
+  background-color: var(--verde-oscuro);
+  color: var(--crema);
+}
+
+/* Foco con teclado: contorno azul de 2.5 px (0.15625rem) */
+.boton:focus-visible {
+  outline: none;
+  border: 0.15625rem solid var(--azul);
+}
+
+/* Desactivado (por ejemplo "conectando…"): se ve más apagado */
+.boton:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+/* Botón grande: Lexend Medium 20 px (1.25rem), relleno 14 × 32 px
+   y contorno de 2 px (0.125rem) */
+.boton--grande {
+  gap: 0.625rem;
+  padding: 0.875rem 2rem;
+  border-width: 0.125rem;
+  font-size: 1.25rem;
+}
+
+
+/* =====================================================================
+   3. HEADER (menú) — se queda pegado arriba al hacer scroll
+   ===================================================================== */
+
+/* Header pegado al borde de arriba al hacer scroll y encima del contenido.
+   Mide 80 px (5rem) de alto y el menú queda a 16 px (1rem) del borde.
+   Su fondo es un "velo": color entero detrás del menú (hasta el 60% del alto)
+   y luego se desvanece a transparente, así lo que pasa por debajo
+   (el logo, la foto, los vinilos) se va borrando suave y nunca se mezcla
+   con el menú. Sobre la portada el velo es azul (se funde con ella) */
+.header {
+  --velo: 100%;
+  --color-velo: var(--azul);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  flex-shrink: 0;
+  height: 5rem;
+  padding-top: 1rem;
+  color: var(--crema);
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--color-velo) var(--velo), transparent) 60%,
+    transparent 100%
+  );
+  transition: color 0.3s ease, --color-velo 0.3s ease;
+}
+
+/* Cuando el header ya no está sobre el azul (lo activa main.js en el inicio,
+   y en sobre-mi.html viene puesto desde el principio),
+   el texto se invierte a azul y el velo pasa a crema */
+.header--claro {
+  --color-velo: var(--crema);
+  color: var(--azul);
+}
+
+/* Centra el menú horizontalmente */
+.nav {
+  display: flex;
+  justify-content: center;
+}
+
+/* Pone los 3 enlaces en una fila separados 98 px (6.125rem)
+   y quita los puntos y márgenes que traen las listas */
+.nav__lista {
+  display: flex;
+  gap: 6.125rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Cada enlace es una columna: arriba el texto y abajo el punto indicador.
+   Lexend Medium 20 px (1.25rem), sin subrayado y con el color del header */
+.nav__enlace {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Dibuja el punto indicador de 10 px (0.625rem) bajo el texto.
+   Parte invisible y aparece con una transición suave */
+.nav__enlace::after {
+  content: "";
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  background-color: currentColor;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* Muestra el punto al pasar el mouse, al navegar con teclado,
+   en la página actual y en la sección que se está viendo */
+.nav__enlace:hover::after,
+.nav__enlace:focus-visible::after,
+.nav__enlace[aria-current="page"]::after,
+.nav__enlace--activo::after {
+  opacity: 1;
+}
+
+/* Contorno visible para quien navega con teclado */
+.nav__enlace:focus-visible {
+  outline: 0.125rem solid currentColor;
+  outline-offset: 0.25rem;
+}
+
+
+/* =====================================================================
+   4. INICIO — fondo de la página
+   ===================================================================== */
+
+/* La mitad de arriba del fondo es azul y la de abajo crema.
+   Así, si se estira la página hacia arriba se ve azul (como la portada)
+   y hacia abajo crema (como proyectos) */
+.pagina-inicio {
+  background: linear-gradient(to bottom, var(--azul) 50%, var(--crema) 50%);
+}
+
+/* Canvas del fondo en píxeles: ocupa todo el ancho y el alto del header + la portada
+   + la zona de quiebre (80 + 576 + 288 px = 59rem; main.js lo ajusta al alto real
+   con --alto-fondo). El margen negativo igual a su alto hace que el header,
+   la portada y el quiebre queden encima del canvas en vez de debajo.
+   Si JavaScript no carga, queda azul liso */
+.fondo-pintura {
+  --alto-fondo: 59rem;
+  display: block;
+  flex-shrink: 0;
+  width: 100%;
+  height: var(--alto-fondo);
+  margin-bottom: calc(var(--alto-fondo) * -1);
+  background-color: var(--azul);
+}
+
+/* QUIEBRE: espacio transparente de 288 px (18rem) entre la portada y proyectos.
+   Ahí main.js dibuja el borde azul rompiéndose en píxeles */
+.quiebre {
+  flex-shrink: 0;
+  height: 18rem;
+}
+
+
+/* Contenedor que centra el contenido de las secciones
+   (1055 px de 1280 px ≈ 82.5% del ancho) */
+.contenedor {
+  width: 82.5%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Al saltar desde el menú, deja libre el alto del header (80 px = 5rem)
+   para que el inicio de la sección no quede tapado.
+   En la portada, ese mismo margen hace que "inicio" suba hasta arriba del todo */
+.portada,
+.proyectos {
+  scroll-margin-top: 5rem;
+}
+
+/* HUINCHA: franja azul a todo el ancho con el nombre de la sección
+   ("proyectos" en el inicio, "sobre mí" en sobre-mi.html) que se desliza
+   hacia el lado sin parar. Lo que se sale por los lados se recorta.
+   Lexend Medium 24 px (1.5rem) en crema, con 14 px (0.875rem) arriba y abajo */
+.huincha {
+  display: flex;
+  margin: 0;
+  padding: 0.875rem 0;
+  overflow: hidden;
+  background-color: var(--azul);
+  color: var(--crema);
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+/* La pista lleva el texto dos veces y se corre la mitad de su largo:
+   cuando termina, la segunda copia quedó justo donde empezó la primera,
+   así el loop no se nota */
+.huincha__pista {
+  display: flex;
+  flex-shrink: 0;
+  animation: huincha-desliza 24s linear infinite;
+}
+
+/* Cada copia: el nombre y "+" en fila, separados 96 px (6rem) */
+.huincha__grupo {
+  display: flex;
+  flex-shrink: 0;
+  gap: 6rem;
+  padding-right: 6rem;
+}
+
+@keyframes huincha-desliza {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* BORDE DE PÍXELES: canvas de 128 px (8rem) justo bajo una huincha.
+   main.js dibuja ahí el azul de la huincha rompiéndose en cuadraditos
+   hacia abajo (como la zona de quiebre del inicio) */
+.borde-pixel {
+  display: block;
+  flex-shrink: 0;
+  width: 100%;
+  height: 8rem;
+  background-color: var(--crema);
+}
+
+/* Con "reducir movimiento" activado (lo marca main.js) la huincha va muy lenta */
+.movimiento-reducido .huincha__pista {
+  animation-duration: 90s;
+}
+
+/* Títulos de sección: Headline 1, Lexend SemiBold 40 px (2.5rem), en azul */
+.titulo-seccion {
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 600;
+  line-height: normal;
+  color: var(--azul);
+}
+
+
+/* =====================================================================
+   5. PORTADA (logo)
+   ===================================================================== */
+
+/* Caja azul de la portada (576 px = 36rem): logo al centro y el pie
+   (botón "ver proyectos") abajo, a 24 px (1.5rem) del borde.
+   Es más baja que la pantalla a propósito: así el borde que se rompe
+   (la zona de quiebre) asoma abajo e invita a bajar */
+.portada {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 36rem;
+  padding-bottom: 1.5rem;
+}
+
+/* El logo ocupa el espacio libre y queda centrado en él */
+.portada .logo {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+/* Pie: cruz + a cada lado y el botón al centro, como marcas de una pantalla.
+   Ocupa todo el ancho con 40 px (2.5rem) a los lados */
+.portada__pie {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+  padding: 0 2.5rem;
+  color: var(--crema);
+}
+
+/* Cruces de 20 px (1.25rem) en Lexend Light */
+.portada__cruz {
+  font-size: 1.25rem;
+  font-weight: 300;
+}
+
+/* El botón "ver proyectos ↓" usa el estilo común .boton .boton--grande
+   (sección 2b); su fondo crema hace que resalte sobre el azul.
+   La flecha baja a saltos, como un píxel que cae */
+.portada__flecha {
+  animation: flecha-baja 1.4s steps(3) infinite;
+}
+
+@keyframes flecha-baja {
+  0% { transform: translateY(-0.1875rem); }
+  100% { transform: translateY(0.1875rem); }
+}
+
+.movimiento-reducido .portada__flecha {
+  animation: none;
+}
+
+/* Logo: Pixelify Sans 128 px (8rem) en blanco, inclinado -12° como en Figma.
+   Las dos líneas quedan una bajo la otra */
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0;
+  font-family: "Pixelify Sans", sans-serif;
+  font-size: 8rem;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--crema);
+  transform: skewX(-12.02deg);
+}
+
+/* Cada línea del logo se mantiene en una sola línea, sin cortarse */
+.logo__linea {
+  white-space: nowrap;
+}
+
+/* "pañitrur" parte más adelante que "dayana" (1em = el alto de la letra):
+   así las dos líneas forman una diagonal, en la misma dirección que la
+   inclinación del logo. El bloque completo queda centrado en la portada */
+.logo__linea + .logo__linea {
+  margin-left: 1em;
+}
+
+
+/* =====================================================================
+   6. PÁGINA SOBRE MÍ (caja de CD en 3D + contacto)
+   ===================================================================== */
+
+/* Toda la página sobre mí tiene fondo crema */
+.pagina-sobre-mi {
+  background-color: var(--crema);
+}
+
+/* Bloque del CD: sin fondo propio (se ve el crema de la página),
+   con 40 px (2.5rem) arriba y 56 px (3.5rem) abajo */
+.sobre-mi {
+  padding-top: 2.5rem;
+  padding-bottom: 3.5rem;
+}
+
+/* Ordena título y CD en una columna separados 24 px (1.5rem) */
+.sobre-mi__contenedor {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* El título "Sobre mí" va alineado a la derecha */
+.sobre-mi__titulo {
+  text-align: right;
+}
+
+/* Espacio donde se dibuja el modelo 3D: todo el ancho y 576 px (36rem) de alto */
+.cd {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 36rem;
+}
+
+/* Texto de respaldo (solo se ve si el 3D no carga): centrado y legible */
+.cd__respaldo {
+  width: 60%;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  color: var(--negro);
+}
+
+/* Quita el margen de arriba del primer párrafo del respaldo */
+.cd__respaldo p:first-child {
+  margin-top: 0;
+}
+
+
+/* =====================================================================
+   7. PROYECTOS (pila de vinilos)
+   ===================================================================== */
+
+/* Sección crema: huincha arriba y carrusel abajo, separados 8 px (0.5rem).
+   La huincha va pegada a la zona de quiebre (que ya termina en crema).
+   Lo que se sale de la pila hacia los lados se recorta */
+.proyectos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: var(--crema);
+  overflow: hidden;
+}
+
+/* Caja de 800 px (50rem) de alto que centra la pila de vinilos */
+.carrusel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50rem;
+}
+
+/* La pila es una fila flex sin puntos de lista.
+   --centro es la mitad de los vinilos (main.js lo calcula) para centrar la diagonal.
+   En pantallas táctiles deja hacer scroll vertical y main.js usa el swipe lateral */
+.pila {
+  --centro: 1.5;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  touch-action: pan-y;
+}
+
+/* Cada vinilo mide 275 px (17.1875rem) de ancho.
+   --i es su lugar fijo en la pila (0 = adelante; lo pone main.js).
+   Con transform se corre 100 px (6.25rem) a la derecha y 50 px (3.125rem)
+   hacia arriba por cada lugar, y se gira 11° con inclinación para el efecto
+   casi isométrico. La pila es fija: el de adelante siempre queda encima */
+.vinilo {
+  flex-shrink: 0;
+  width: 17.1875rem;
+  z-index: calc(10 - var(--i));
+  transform:
+    translate(calc((var(--i) - var(--centro)) * 6.25rem), calc((var(--i) - var(--centro)) * -3.125rem))
+    rotate(11deg) skewX(11deg) scaleY(0.98);
+}
+
+/* Margen negativo igual al ancho del vinilo: así todos parten del mismo punto
+   y quedan encimados; la diagonal la hace el transform */
+.vinilo + .vinilo {
+  margin-left: -17.1875rem;
+}
+
+/* Contenido del vinilo (enlace a la página del proyecto): portada y nombre en fila,
+   separados 18 px (1.125rem). Se desliza con una transición suave */
+.vinilo__contenido {
+  display: flex;
+  align-items: center;
+  gap: 1.125rem;
+  color: var(--negro);
+  text-decoration: none;
+  transition: transform 0.4s ease;
+}
+
+/* Portada: 275 × 371 px (17.1875rem × 23.1875rem), borde blanco semitransparente
+   y 86% de opacidad en reposo */
+.vinilo__portada {
+  display: flex;
+  flex-shrink: 0;
+  width: 17.1875rem;
+  height: 23.1875rem;
+  overflow: hidden;
+  background-color: var(--gris-claro);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.75);
+  opacity: 0.86;
+  transition: opacity 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Portada provisoria (mientras no haya imagen): azul con el número de la
+   tarea y el nombre en Pixelify, inclinados como el logo */
+.vinilo__portada--pendiente {
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem;
+  background-color: var(--azul);
+  font-family: "Pixelify Sans", sans-serif;
+  color: var(--crema);
+}
+
+.vinilo__marcador {
+  font-size: 1rem;
+}
+
+.vinilo__marcador-nombre {
+  font-size: 1.5rem;
+  line-height: 1.1;
+  transform: skewX(-12.02deg);
+}
+
+/* La foto llena toda la portada sin deformarse */
+.vinilo__portada img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Nombres de librerías en la descripción (por ejemplo face-api.js) */
+.proyecto__texto code {
+  font-family: inherit;
+  font-weight: 500;
+  color: var(--azul);
+}
+
+/* Nombre del proyecto: Lexend Regular 12 px (0.75rem), mayúsculas,
+   espaciado de letras 6% (0.06em). Contra-girado para que se lea y oculto en reposo */
+.vinilo__nombre {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  transform: rotate(-11deg) skewX(-11deg) scaleY(0.98);
+  transition: opacity 0.4s ease;
+}
+
+/* Vinilo afuera (mouse encima, foco de teclado o toque en mobile):
+   sale 166 px (10.375rem) a la derecha y sube 19 px (1.1875rem),
+   sin cambiar de lugar en la pila. Al soltarlo vuelve solo */
+.vinilo:hover .vinilo__contenido,
+.vinilo__contenido:focus-visible,
+.vinilo--afuera .vinilo__contenido {
+  transform: translate(10.375rem, -1.1875rem);
+}
+
+/* Al salir, la portada queda opaca y con sombra (0 18 px 40 px, 14% negro) */
+.vinilo:hover .vinilo__portada,
+.vinilo__contenido:focus-visible .vinilo__portada,
+.vinilo--afuera .vinilo__portada {
+  opacity: 1;
+  box-shadow: 0 1.125rem 2.5rem rgba(0, 0, 0, 0.14);
+}
+
+/* Al salir, aparece el nombre del proyecto */
+.vinilo:hover .vinilo__nombre,
+.vinilo__contenido:focus-visible .vinilo__nombre,
+.vinilo--afuera .vinilo__nombre {
+  opacity: 1;
+}
+
+/* Quita el contorno por defecto del enlace; el foco se nota porque el vinilo sale */
+.vinilo__contenido:focus-visible {
+  outline: none;
+}
+
+
+/* =====================================================================
+   8. PÁGINA DE PROYECTO
+   ===================================================================== */
+
+/* Fondo crema en las páginas de proyecto (igual que el resto del sitio) */
+.pagina-proyecto {
+  background-color: var(--crema);
+}
+
+/* Columna de 960 px de 1280 px (75%) centrada, con 8 px arriba (ya hay huincha
+   y borde de píxeles) y 64 px (4rem) abajo.
+   Botón y ficha separados 24 px (1.5rem) */
+.proyecto {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+  width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 0.5rem;
+  padding-bottom: 4rem;
+}
+
+/* El botón volver usa el estilo común .boton (sección 2b).
+   Del lado del ícono el relleno es un poco menor: 14 px (0.875rem) */
+.boton-volver {
+  padding-left: 0.875rem;
+}
+
+/* Flecha de 20 px (1.25rem); toma el color del texto del botón */
+.boton-volver__icono {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Ficha del proyecto: encabezado, imágenes y descripción en columna,
+   separados 24 px (1.5rem), usando todo el ancho */
+.proyecto__ficha {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+/* Encabezado: título y año a la izquierda, etiqueta de área a la derecha,
+   alineados arriba */
+.proyecto__encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+/* Título y año en columna, separados 2 px (0.125rem) */
+.proyecto__titulo-anio {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+/* Nombre del proyecto: Pixelify Sans 56 px (3.5rem) en azul, inclinado -12°
+   como el logo (mismo sistema de títulos del sitio). Se inclina desde su
+   esquina de abajo para que no se corra del año */
+.proyecto__nombre {
+  margin: 0;
+  font-family: "Pixelify Sans", sans-serif;
+  font-size: 3.5rem;
+  font-weight: 400;
+  line-height: normal;
+  color: var(--azul);
+  transform: skewX(-12.02deg);
+  transform-origin: left bottom;
+}
+
+/* Año: Lexend Medium 24 px (1.5rem) en verde */
+.proyecto__anio {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--verde);
+}
+
+/* Lista de etiquetas de área: en fila, pegadas a la derecha y separadas 8 px (0.5rem).
+   Si no caben, pasan a otra línea. Sin puntos ni márgenes de lista */
+.proyecto__areas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Etiqueta de área: contorno azul de 1 px con esquinas rectas (como un píxel),
+   relleno 6 × 12 px. Lexend Medium 16 px en azul, sin cortar la línea */
+.proyecto__area {
+  flex-shrink: 0;
+  padding: 0.375rem 0.75rem;
+  border: 0.0625rem solid var(--azul);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--azul);
+  white-space: nowrap;
+}
+
+/* Caja de imágenes: todo el ancho, proporción 2:1 (960 × 480 en Figma)
+   y fondo crema mientras carga */
+.proyecto__imagenes {
+  display: flex;
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  margin: 0;
+  overflow: hidden;
+  background-color: var(--fondo-imagen);
+}
+
+/* La foto cubre la caja completa sin deformarse */
+.proyecto__imagenes img,
+.proyecto__imagenes video {
+  flex-shrink: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Imagen ↔ video: en reposo se ve la imagen del proyecto; con el cursor
+   encima (o un toque en el teléfono) main.js agrega --activo y se ve el video,
+   completo y sin recortar sobre fondo negro */
+.proyecto__video {
+  background-color: var(--negro);
+  cursor: pointer;
+}
+
+.proyecto__imagenes video {
+  display: none;
+  object-fit: contain;
+}
+
+.proyecto__video--activo .proyecto__poster {
+  display: none;
+}
+
+.proyecto__video--activo video {
+  display: block;
+}
+
+/* Aviso "[ video pendiente ]": solo se ve si el video todavía no existe
+   (main.js agrega la clase proyecto__imagenes--pendiente) */
+.proyecto__pendiente {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 0.5rem;
+  width: 100%;
+  height: 100%;
+  background-color: var(--azul);
+  font-family: "Pixelify Sans", sans-serif;
+  font-size: 1.75rem;
+  color: var(--crema);
+}
+
+/* La ruta donde va el video, en Lexend chico */
+.proyecto__pendiente-ruta {
+  font-family: "Lexend", sans-serif;
+  font-size: 0.875rem;
+  opacity: 0.8;
+}
+
+/* Si el video no existe, al activarlo se ve el aviso en vez del video */
+.proyecto__imagenes--pendiente video {
+  display: none !important;
+}
+
+.proyecto__imagenes--pendiente.proyecto__video--activo .proyecto__pendiente {
+  display: flex;
+}
+
+/* Capa de píxeles azules sobre la foto (la crea main.js). Mide lo mismo que
+   la foto y el margen negativo la pone encima, sin usar position */
+.imagen-pixel {
+  flex-shrink: 0;
+  width: 100%;
+  height: 100%;
+  margin-left: -100%;
+  pointer-events: none;   /* deja usar los controles del video que hay debajo */
+}
+
+/* FICHA POR BLOQUES (proyectos del ramo): cada dato pedido va en su propio
+   bloque numerado, separado del anterior por una línea azul de 1 px.
+   Etiqueta arriba y contenido abajo, separados 12 px (0.75rem) */
+.proyecto__bloque {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  width: 100%;
+  padding-top: 1.25rem;
+  border-top: 0.0625rem solid var(--azul);
+}
+
+/* El bloque del nombre y el del video usan todo el ancho */
+.proyecto__bloque .proyecto__encabezado,
+.proyecto__bloque .proyecto__imagenes {
+  align-self: stretch;
+}
+
+/* Etiqueta del bloque ("01 · nombre"): Lexend Medium 14 px en verde musgo,
+   en minúsculas y con letras un poco separadas */
+.proyecto__etiqueta {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--verde);
+}
+
+/* Texto de los bloques (descripción y créditos): Lexend 16 px, interlineado 1.5,
+   con un ancho máximo cómodo para leer (unas 70 letras por línea) */
+.proyecto__texto {
+  max-width: 45rem;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--negro);
+}
+
+/* Descripción: Lexend Regular 16 px (1rem) con interlineado 1.5 */
+.proyecto__descripcion {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--negro);
+}
+
+/* Quita el margen de los párrafos para que queden pegados como en Figma */
+.proyecto__descripcion p {
+  margin: 0;
+}
+
+/* "Autores:" en Lexend Bold */
+.proyecto__descripcion strong {
+  font-weight: 700;
+}
+
+
+/* =====================================================================
+   9. CONTACTO (sección final de sobre-mi.html)
+   ===================================================================== */
+
+/* Título y datos centrados en columna, separados 48 px (3rem),
+   en azul sobre el crema de la página. Ya no ocupa la pantalla completa:
+   solo tiene 80 px (5rem) de aire arriba y abajo */
+.contacto {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  color: var(--azul);
+}
+
+/* Título: Pixelify Sans Medium 72 px (4.5rem), centrado y en una sola línea */
+.contacto__titulo {
+  margin: 0;
+  font-family: "Pixelify Sans", sans-serif;
+  font-size: 4.5rem;
+  font-weight: 400;
+  transform: skewX(-12.02deg);
+  line-height: normal;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Lista de datos: columna centrada, separados 20 px (1.25rem), Lexend 20 px */
+.contacto__datos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 1.25rem;
+}
+
+/* Cada línea de contacto: etiqueta y dato en fila, separados 6 px (0.375rem),
+   alineados por la base del texto */
+.contacto__enlace {
+  display: flex;
+  align-items: baseline;
+  gap: 0.375rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Etiqueta ("correo:") en Lexend Medium */
+.contacto__etiqueta {
+  font-weight: 500;
+}
+
+/* Dato en Lexend Regular y subrayado */
+.contacto__valor {
+  font-weight: 400;
+  text-decoration: underline;
+}
+
+/* Al pasar el mouse, el dato cambia a verde para mostrar que es un enlace */
+.contacto__enlace:hover .contacto__valor {
+  color: var(--verde);
+}
+
+/* Contorno visible para quien navega con teclado */
+.contacto__enlace:focus-visible {
+  outline: 0.125rem solid var(--azul);
+  outline-offset: 0.25rem;
+}
+
+
+/* =====================================================================
+   9b. FOOTER (todas las páginas)
+   ===================================================================== */
+
+/* Queda al final de la página aunque el contenido sea corto
+   (el body es una columna flex). Deja 96 px (6rem) de aire sobre él,
+   para separarlo del carrusel o del contenido */
+.pie {
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+  padding-top: 6rem;
+}
+
+/* Su borde de píxeles va al revés (el azul del footer sube rompiéndose)
+   y es más bajo que el de las huinchas: 80 px (5rem) */
+.borde-pixel--arriba {
+  height: 5rem;
+  transform: scaleY(-1);
+}
+
+/* Franja azul delgada: firma a la izquierda, redes al centro y nota a la
+   derecha, con 12 px (0.75rem) arriba y abajo y 40 px (2.5rem) a los lados */
+.pie__contenido {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.75rem 2.5rem;
+  background-color: var(--azul);
+  color: var(--crema);
+}
+
+/* Firma en Pixelify Sans 22 px (1.375rem), inclinada como el logo */
+.pie__firma {
+  margin: 0;
+  font-family: "Pixelify Sans", sans-serif;
+  font-size: 1.375rem;
+  transform: skewX(-12.02deg);
+}
+
+/* Íconos en fila, separados 16 px (1rem), sin puntos de lista */
+.pie__redes {
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Cada red es un cuadrado de 36 px (2.25rem) con borde crema de 1.5 px,
+   esquinas rectas (como un píxel). Al pasar el mouse se rellena de crema
+   y el ícono pasa a azul */
+.pie__red {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 0.09375rem solid var(--crema);
+  color: var(--crema);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.pie__red:hover {
+  background-color: var(--crema);
+  color: var(--azul);
+}
+
+.pie__red:focus-visible {
+  outline: 0.125rem solid var(--crema);
+  outline-offset: 0.25rem;
+}
+
+/* El ícono es una "máscara": la forma viene del archivo SVG y el color
+   del texto (currentColor), así cambia con el hover. 18 px (1.125rem) */
+.pie__icono {
+  width: 1.125rem;
+  height: 1.125rem;
+  background-color: currentColor;
+  mask: var(--icono) center / contain no-repeat;
+  -webkit-mask: var(--icono) center / contain no-repeat;
+}
+
+.pie__icono--github {
+  --icono: url("https://cdn.jsdelivr.net/npm/simple-icons@16/icons/github.svg");
+}
+
+.pie__icono--instagram {
+  --icono: url("https://cdn.jsdelivr.net/npm/simple-icons@16/icons/instagram.svg");
+}
+
+/* Nota "portafolio · 2026" en Lexend 14 px */
+.pie__nota {
+  margin: 0;
+  font-size: 0.875rem;
+  opacity: 0.85;
+}
+
+
+/* =====================================================================
+   10. CURSOR "BOUNDING BOX" (solo con mouse; lo crea main.js)
+   ===================================================================== */
+
+/* Cuando main.js activa el cursor propio, se esconde la flecha del sistema
+   en toda la página */
+.con-cursor,
+.con-cursor * {
+  cursor: none !important;
+}
+
+/* Cursor: etiqueta, caja y coordenadas en columna, separadas 4 px (0.25rem).
+   No ocupa alto en la página, queda encima de todo (z-index) y no bloquea los clics.
+   Lexend Medium 11 px (0.6875rem), espaciado 4% (0.04em), en verde musgo.
+   Los números usan cifras del mismo ancho (tabular-nums) para que no "bailen"
+   main.js lo mueve con transform siguiendo al mouse */
+.cursor {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  align-items: flex-start;
+  align-self: flex-start;
+  gap: 0.25rem;
+  height: 0;
+  z-index: 100;
+  pointer-events: none;
+  font-family: "Lexend", sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  color: var(--verde);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s ease, color 0.15s ease;
+}
+
+/* Sobre fondos oscuros (azul, foto, franjas) el cursor pasa a crema
+   con una sombra suave, para que se lea en cualquier parte (lo activa main.js) */
+.cursor--claro {
+  color: var(--crema);
+  filter: drop-shadow(0 0 0.125rem rgba(26, 26, 26, 0.45));
+}
+
+/* El cursor aparece cuando el mouse está dentro de la ventana */
+.cursor--visible {
+  opacity: 1;
+}
+
+/* Caja de 26 px (1.625rem) con borde fino de 1 px (0.0625rem) semitransparente.
+   Las 4 esquinas (trazos de 7 × 2 px) y el punto central de 4 px
+   se dibujan como fondos de color, sin elementos extra.
+   Usan currentColor: toman el color del cursor (verde o crema) */
+.cursor__caja {
+  flex-shrink: 0;
+  width: 1.625rem;
+  height: 1.625rem;
+  border: 0.0625rem solid color-mix(in srgb, currentColor 45%, transparent);
+  background:
+    linear-gradient(currentColor, currentColor) left top / 0.4375rem 0.125rem no-repeat,
+    linear-gradient(currentColor, currentColor) left top / 0.125rem 0.4375rem no-repeat,
+    linear-gradient(currentColor, currentColor) right top / 0.4375rem 0.125rem no-repeat,
+    linear-gradient(currentColor, currentColor) right top / 0.125rem 0.4375rem no-repeat,
+    linear-gradient(currentColor, currentColor) left bottom / 0.4375rem 0.125rem no-repeat,
+    linear-gradient(currentColor, currentColor) left bottom / 0.125rem 0.4375rem no-repeat,
+    linear-gradient(currentColor, currentColor) right bottom / 0.4375rem 0.125rem no-repeat,
+    linear-gradient(currentColor, currentColor) right bottom / 0.125rem 0.4375rem no-repeat,
+    linear-gradient(currentColor, currentColor) center / 0.25rem 0.25rem no-repeat;
+  background-origin: border-box;
+}
+
+/* Coordenadas corridas 30 px (1.875rem) a la derecha, como en Figma */
+.cursor__coordenadas {
+  padding-left: 1.875rem;
+}
+
+
+/* =====================================================================
+   11. MOBILE (pantallas de hasta 768 px = 48rem)
+   ===================================================================== */
+
+@media (max-width: 48rem) {
+
+  /* Header mobile: 56 px (3.5rem) de alto y el menú a 12 px (0.75rem) del borde.
+     El velo crema cubre hasta el 65% para que alcance a tapar el punto */
+  .header {
+    height: 3.5rem;
+    padding-top: 0.75rem;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-velo) var(--velo), transparent) 65%,
+      transparent 100%
+    );
+  }
+
+  /* El menú usa todo el ancho y reparte los 3 enlaces con el mismo espacio
+     entre ellos, así cabe en cualquier teléfono (desde 320 px) */
+  .nav__lista {
+    justify-content: space-evenly;
+    width: 100%;
+    gap: 0;
+  }
+
+  /* Menú en Lexend Medium 16 px (1rem) */
+  .nav__enlace {
+    font-size: 1rem;
+  }
+
+  /* Punto indicador más chico: 6.67 px (0.4167rem) */
+  .nav__enlace::after {
+    width: 0.4167rem;
+    height: 0.4167rem;
+  }
+
+  /* Al saltar desde el menú deja libre el alto del header mobile (56 px = 3.5rem) */
+  .portada,
+  .proyectos {
+    scroll-margin-top: 3.5rem;
+  }
+
+  /* Portada mobile: 560 px (35rem). Con el header suma 616 px, así el botón
+     y el quiebre se ven incluso en teléfonos chicos (iPhone SE: 667 px) */
+  .portada {
+    height: 35rem;
+    padding-bottom: 1.25rem;
+  }
+
+  /* Pie mobile: 20 px (1.25rem) a los lados */
+  .portada__pie {
+    padding: 0 1.25rem;
+  }
+
+  /* El canvas del fondo en mobile mide el header + la portada + el quiebre:
+     56 + 560 + 192 px = 50.5rem */
+  .fondo-pintura {
+    --alto-fondo: 50.5rem;
+  }
+
+  /* Quiebre mobile: 192 px (12rem) de alto */
+  .quiebre {
+    height: 12rem;
+  }
+
+  /* Logo mobile: Pixelify Sans 52 px (3.25rem), para que la diagonal
+     quepa a lo ancho incluso en teléfonos de 320 px */
+  .logo {
+    font-size: 3.25rem;
+  }
+
+  /* El contenedor usa todo el ancho con 20 px (1.25rem) de margen interior */
+  .contenedor {
+    width: 100%;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  /* Footer mobile: en columna y centrado, más compacto, 20 px a los lados
+     y 64 px (4rem) de aire arriba */
+  .pie {
+    padding-top: 4rem;
+  }
+
+  .pie__contenido {
+    flex-direction: column;
+    gap: 0.625rem;
+    padding: 1rem 1.25rem;
+  }
+
+  .pie__firma {
+    font-size: 1.25rem;
+  }
+
+  .pie .borde-pixel--arriba {
+    height: 3.5rem;
+  }
+
+  /* Borde de píxeles mobile: 80 px (5rem) */
+  .borde-pixel {
+    height: 5rem;
+  }
+
+  /* Huincha más baja: Lexend 16 px (1rem) y separación de 48 px (3rem) */
+  .huincha {
+    padding: 0.5rem 0;
+    font-size: 1rem;
+  }
+
+  .huincha__grupo {
+    gap: 3rem;
+    padding-right: 3rem;
+  }
+
+  /* Títulos de sección en 28 px (1.75rem), siguen en azul */
+  .titulo-seccion {
+    font-size: 1.75rem;
+  }
+
+  /* Sobre mí mobile: 24 px (1.5rem) arriba y 56 px (3.5rem) abajo */
+  .sobre-mi {
+    padding-top: 1.5rem;
+    padding-bottom: 3.5rem;
+  }
+
+  /* Centra el CD en la columna */
+  .sobre-mi__contenedor {
+    align-items: center;
+  }
+
+  /* El título ocupa todo el ancho para poder alinearse a la derecha */
+  .sobre-mi__titulo {
+    width: 100%;
+  }
+
+  /* El modelo 3D en mobile mide 230 px (14.375rem) de alto */
+  .cd {
+    height: 14.375rem;
+  }
+
+  /* Texto de respaldo a todo el ancho y más chico */
+  .cd__respaldo {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  /* Carrusel mobile de 852 px (53.25rem) de alto */
+  .carrusel {
+    height: 53.25rem;
+  }
+
+  /* Vinilo mobile: 220 px (13.75rem) de ancho y un paso de
+     30 px (1.875rem) a la derecha y 43 px (2.6875rem) hacia arriba */
+  .vinilo {
+    width: 13.75rem;
+    transform:
+      translate(calc((var(--i) - var(--centro)) * 1.875rem), calc((var(--i) - var(--centro)) * -2.6875rem))
+      rotate(11deg) skewX(11deg) scaleY(0.98);
+  }
+
+  /* Encima los vinilos mobile con un margen negativo igual a su ancho */
+  .vinilo + .vinilo {
+    margin-left: -13.75rem;
+  }
+
+  /* En mobile la etiqueta va arriba de la portada, alineada a la izquierda */
+  .vinilo__contenido {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 0.3125rem;
+  }
+
+  /* Portada provisoria mobile: textos más chicos */
+  .vinilo__portada--pendiente {
+    padding: 1rem;
+  }
+
+  .vinilo__marcador-nombre {
+    font-size: 1rem;
+  }
+
+  /* Portada mobile: 220 × 295 px (13.75rem × 18.4375rem) */
+  .vinilo__portada {
+    width: 13.75rem;
+    height: 18.4375rem;
+  }
+
+  /* Etiqueta mobile: 10 px (0.625rem) sobre una pestaña crema
+     con relleno 2 × 6 px y esquinas rectas */
+  .vinilo__nombre {
+    padding: 0.125rem 0.375rem;
+    background-color: var(--crema);
+    font-size: 0.625rem;
+  }
+
+  /* Vinilo afuera en mobile: sale hacia el lado 40 px (2.5rem) y sube 16 px (1rem) */
+  .vinilo:hover .vinilo__contenido,
+  .vinilo__contenido:focus-visible,
+  .vinilo--afuera .vinilo__contenido {
+    transform: translate(2.5rem, -1rem);
+  }
+
+  /* Página de proyecto mobile: todo el ancho, 56 px arriba, 20 px a los lados y 40 px abajo */
+  .proyecto {
+    width: 100%;
+    padding: 0.5rem 1.25rem 3rem;
+  }
+
+  /* Botones mobile: ícono y texto a 6 px, relleno 10 × 14 px, texto 14 px */
+  .boton {
+    gap: 0.375rem;
+    padding: 0.625rem 0.875rem;
+    font-size: 0.875rem;
+  }
+
+  /* Botón volver mobile: 12 px del lado del ícono */
+  .boton-volver {
+    padding-left: 0.75rem;
+  }
+
+  /* Botón grande mobile: 17 px (1.0625rem) y relleno 12 × 24 px */
+  .boton--grande {
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1.0625rem;
+  }
+
+  /* Flecha mobile de 18 px (1.125rem) */
+  .boton-volver__icono {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  /* El bloque de título y año ocupa el espacio que deja la etiqueta */
+  .proyecto__titulo-anio {
+    flex-grow: 1;
+    flex-basis: 0;
+  }
+
+  /* Nombre del proyecto en 36 px (2.25rem) */
+  .proyecto__nombre {
+    font-size: 2.25rem;
+  }
+
+  /* Año en 18 px (1.125rem) */
+  .proyecto__anio {
+    font-size: 1.125rem;
+  }
+
+  /* En el teléfono el encabezado va en columna: nombre y año arriba,
+     y las etiquetas de área abajo, en fila y alineadas a la izquierda.
+     Así un nombre largo nunca empuja las etiquetas fuera de la pantalla */
+  .proyecto__encabezado {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .proyecto__areas {
+    justify-content: flex-start;
+    gap: 0.375rem;
+  }
+
+  /* Etiqueta de área más chica: 13 px (0.8125rem) y relleno 4 × 10 px */
+  .proyecto__area {
+    padding: 0.25rem 0.625rem;
+    font-size: 0.8125rem;
+  }
+
+  /* Caja de imágenes con alto fijo de 265 px (16.5625rem) y ancho al 100% */
+  .proyecto__imagenes {
+    aspect-ratio: auto;
+    height: 16.5625rem;
+  }
+
+  /* Descripción en 15 px (0.9375rem) */
+  .proyecto__descripcion {
+    font-size: 0.9375rem;
+  }
+
+  /* Contacto mobile: separación de 32 px (2rem), 20 px a los lados
+     y 48 px (3rem) arriba y abajo */
+  .contacto {
+    gap: 2rem;
+    padding: 3rem 1.25rem;
+  }
+
+  /* Título de contacto: Pixelify Sans Medium 44 px (2.75rem) */
+  .contacto__titulo {
+    font-size: 2.75rem;
+  }
+
+  /* Datos de contacto en 16 px (1rem), separados 16 px (1rem) */
+  .contacto__datos {
+    gap: 1rem;
+    font-size: 1rem;
+  }
+}
