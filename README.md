@@ -20,8 +20,8 @@ Este proyecto es mi portafolio web, en el cuál quise plasmar a través de lo vi
 
 Portafolio web de Dayana Pañitrur, diseñadora con mención industrial que hoy expande su práctica hacia el diseño de interacción digital. Un azul eléctrico que se rompe en píxeles para dejar ver la naturaleza.
 
-**🌐 Ver el sitio:** https://dayanapanitrur.github.io/examen-portafolio/<br>
-**📁 Repositorio:** https://github.com/dayanapanitrur/examen-portafolio
+** Ver el sitio:** https://dayanapanitrur.github.io/examen-portafolio/<br>
+** Repositorio:** https://github.com/dayanapanitrur/examen-portafolio
 
 ---
 
