@@ -2,8 +2,8 @@
 
 Portafolio web de Dayana Pañitrur, diseñadora con mención industrial que hoy expande su práctica hacia el diseño de interacción digital. Un azul eléctrico que se rompe en píxeles para dejar ver la naturaleza.
 
-**🌐 Ver el sitio:** https://dayanapanitrur.github.io/examen-portafolio/<br>
-**📁 Repositorio:** https://github.com/dayanapanitrur/examen-portafolio
+**Ver el sitio:** https://dayanapanitrur.github.io/examen-portafolio/<br>
+**Repositorio:** https://github.com/dayanapanitrur/examen-portafolio
 
 ![Fondo de la portada: el cursor revela la foto en píxeles](img/readme/fondo-cursor.jpg)
 
@@ -421,6 +421,9 @@ function fondoEnPunto(x, y) {
 
 ### Reflexión del semestre
 
+Puedo concluir que estar en este curso fue una experiencia increíble, nunca pensé que podría haber hecho proyectos como los que hicimos, o por lo menos no tan pronto con los conocimientos que tenía. El curso me abrió la mente a explorar diversos conceptos y filosofías a las que nunca les había tomado atención.
+
+Por otra parte me enseñó a utilizar bien el lenguaje y saber lo importante que es cuando queremos realizar proyectos donde nosotros dirigimos, aprendí a realizar mejores prompts para utilizar con IA y explorar todas sus posibilidades, a conocer programas y herramientas muy útiles que por seguro seguiré usando de aquí en adelante.
 
 ### Herramientas utilizadas
 
